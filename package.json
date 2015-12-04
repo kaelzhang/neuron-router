@@ -24,5 +24,8 @@
   "devDependencies": {
     "mocha": "*",
     "chai": "*"
+  },
+  "dependencies": {
+    "run-mocha-cases": "^1.0.7"
   }
 }
