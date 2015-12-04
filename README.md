@@ -19,11 +19,46 @@
 $ npm install neuron-router --save
 ```
 
+
+
 ## Usage
 
+config:
+
 ```js
-var neuron_router = require('neuron-router');
+{
+  routers: [
+    {
+      location: '/mod',
+      root: '/home/my/.static_modules/'
+    },
+    {
+      location: '/old',
+      root: '/data/public',
+
+      // If the current router matches the pathname, 
+      // but the file does not exist, it will use the this `by_pass`
+      by_pass: 'http://domain.com'
+    }
+  ],
+
+  // If no routers match the given pathname, it will use the by_pass url
+  by_pass: 'http://domain2.com/'
+}
 ```
+
+```js
+var router = require('neuron-router');
+var pathname = '/pathname/to/a.js'
+router.route(pathname, config, function (filename, fallback_url) {
+  
+});
+```
+
+- pathname `String` pathname of the url(`require('url').parse(url).pathname`)
+- config `Object` see above
+- filename `String` if any router matches the `pathname`, and the routed filename exists, it will not be null.
+- fallback ``
 
 ## License
 
