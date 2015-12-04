@@ -15,8 +15,8 @@ exports.route = function (path, config, callback) {
         return callback(null, null);
       }
 
-      var by_pass = exports._make_sure_trailing_slash(config.by_pass);
-      return callback(null, by_pass + path);
+      var url = exports._join_url_path(config.by_pass, path);
+      return callback(null, url);
     });
   }
 
@@ -33,15 +33,20 @@ exports.route = function (path, config, callback) {
   var found;
   var pathname;
   routers.some(function (router) {
-    if (path.indexOf(router.location) !== 0) {
+    var l = router.location;
+    if (path.indexOf(l) !== 0) {
       return;
     }
 
-    var p = path.slice(router.location.length);
+    var p = path.slice(l.length);
 
-    if (/^\//.test(p)) {
+    if (
+      // location `/a` should not match `/a.js`,
+      /\/$/.test(l)
+      || /^\//.test(p)
+    ) {
       found = router;
-      pathname = exports._remove_leading_slash(p);
+      pathname = p;
       return true;
     }
   });
@@ -51,7 +56,7 @@ exports.route = function (path, config, callback) {
   }
 
   // TODO: check if req.url has queries
-  var filename = node_path.join(found.root, pathname);
+  var filename = exports._join_file_path(found.root, pathname);
 
   fs.exists(filename, function (exists) {
     if (exists) {
@@ -60,8 +65,8 @@ exports.route = function (path, config, callback) {
 
     callback(
       null, 
-      router.by_pass 
-        ? node_path.join(router.by_pass, pathname)
+      found.by_pass 
+        ? exports._join_url_path(found.by_pass, pathname)
         : null
     );
   });
@@ -75,4 +80,19 @@ exports._make_sure_trailing_slash = function (str) {
 
 exports._remove_leading_slash = function (str) {
   return str.replace(/^\/+/, '');
+};
+
+
+// Only used for the situation of neuron-router
+exports._join_file_path = function (a, b) {
+  b = exports._remove_leading_slash(b);
+  return node_path.join(a, b);
+};
+
+
+// Only used for the situation of neuron-router
+exports._join_url_path = function (a, b) {
+  a = exports._make_sure_trailing_slash(a);
+  b = exports._remove_leading_slash(b);
+  return a + b;
 };
