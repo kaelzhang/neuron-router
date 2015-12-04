@@ -22,10 +22,10 @@
     "url": "https://github.com/kaelzhang/neuron-router/issues"
   },
   "devDependencies": {
+    "chai": "*",
+    "clone": "^1.0.2",
     "mocha": "*",
-    "chai": "*"
-  },
-  "dependencies": {
     "run-mocha-cases": "^1.0.7"
-  }
+  },
+  "dependencies": {}
 }
