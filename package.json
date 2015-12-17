@@ -1,6 +1,6 @@
 {
   "name": "neuron-router",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "neuron-router",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,10 @@
     "url": "git://github.com/kaelzhang/neuron-router.git"
   },
   "keywords": [
-    "neuron-router"
+    "neuron-router",
+    "router",
+    "bypass",
+    "parser"
   ],
   "engines": {
     "node": ">=0.10.0"
@@ -27,5 +30,8 @@
     "mocha": "*",
     "run-mocha-cases": "^1.0.7"
   },
-  "dependencies": {}
+  "dependencies": {
+    "async-some": "^1.0.2",
+    "make-array": "^0.1.2"
+  }
 }

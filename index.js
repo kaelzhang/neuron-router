@@ -2,6 +2,8 @@
 
 var node_path = require('path');
 var fs = require('fs');
+var some = require('async-some');
+var make_array = require('make-array');
 
 
 // @param {String} path pathname of the url, starts with '/'
@@ -55,11 +57,24 @@ exports.route = function (path, config, callback) {
     return none();
   }
 
-  // TODO: check if req.url has queries
-  var filename = exports._join_file_path(found.root, pathname);
+  var roots = make_array(found.root);
 
-  fs.exists(filename, function (exists) {
-    if (exists) {
+  function exists (root, callback) {
+    var filename = exports._join_file_path(root, pathname);
+    fs.exists(filename, function (exists) {
+      if (exists) {
+        return callback(null, filename);
+      }
+
+      // not found
+      callback(null);
+    });
+  }
+
+  some(roots, exists, function (err, filename) {
+    // actually, there is no `err`.
+
+    if (filename) {
       return callback(filename, null);
     }
 

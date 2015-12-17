@@ -11,15 +11,13 @@
 
 # neuron-router
 
-<!-- description -->
+Utility method to route a given url according to routing config.
 
 ## Install
 
 ```sh
 $ npm install neuron-router --save
 ```
-
-
 
 ## Usage
 
@@ -68,6 +66,7 @@ router.route(pathname, config, function (filename, fallback_url) {
 If the given `pathname` matches the `router.location`, neuron-router will search the local file within `router.root`, 
 and if found, the `filename` of the found file will be passed to `callback`. 
 Otherwise, `filename` will be `null`, and if `router.by_pass` or `config.by_pass` is defined, 
+the resolved fallback url will passed to `callback` as the second parameter.
 
 ##### router.root `path`
 
@@ -84,7 +83,8 @@ Suppose
 
 Then, neuron-router will search `'/data/path/to/a.js'` instead of `/data/to/a.js`.
 
-And if `router.with_location` is `false`, it will search `/data/to/a.js`
+And if `router.with_location` is `false`, it will search `/data/to/a.js`.
+
 
 ## License
 
