@@ -21,6 +21,22 @@ var routers = [
   {
     location: '/b/',
     root: root('b')
+  },
+
+  {
+    location: '/c',
+    root: [root('a'), root('b')]
+  },
+
+  {
+    location: '/d',
+    root: [root('b'), root('c')]
+  },
+
+  {
+    location: '/e',
+    root: [root('e')],
+    with_location: true
   }
 ];
 
@@ -143,6 +159,42 @@ run
       e: [
         null,
         'http://domain2.com/not-found.js'
+      ]
+    },
+
+    {
+      d: '1.1.0: multi root, not found in first root',
+      a: '/c/c.js',
+      e: [
+        root('b/c.js'),
+        null
+      ]
+    },
+
+    {
+      d: '1.1.0: multi root, found in first root',
+      a: '/d/c.js',
+      e: [
+        root('b/c.js'),
+        null
+      ]
+    },
+
+    {
+      d: '1.1.0: with_location',
+      a: '/e/e.js',
+      e: [
+        root('e/e/e.js'),
+        null
+      ]
+    },
+
+    {
+      d: '1.1.0: with_location, not found',
+      a: '/e/f.js',
+      e: [
+        null,
+        null
       ]
     }
   ]);
