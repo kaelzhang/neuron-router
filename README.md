@@ -34,11 +34,16 @@ config:
     },
     {
       location: '/old',
-      root: '/data/public',
+      root: ['/data/public2', '/data/public'],
 
       // If the current router matches the pathname, 
       // but the file does not exist, it will use the this `by_pass`
       by_pass: 'http://domain.com'
+    },
+    {
+      location: '/new',
+      root: '/data/',
+      with_location: true
     }
   ],
 
@@ -58,7 +63,28 @@ router.route(pathname, config, function (filename, fallback_url) {
 - pathname `String` pathname of the url(`require('url').parse(url).pathname`)
 - config `Object` see above
 - filename `String` if any router matches the `pathname`, and the routed filename exists, it will not be null.
-- fallback ``
+- fallback_url `String`
+
+If the given `pathname` matches the `router.location`, neuron-router will search the local file within `router.root`, 
+and if found, the `filename` of the found file will be passed to `callback`. 
+Otherwise, `filename` will be `null`, and if `router.by_pass` or `config.by_pass` is defined, 
+
+##### router.root `path`
+
+`router.root` can be an array of paths, neuron-router will search the file from each path one by one.
+
+##### router.with_location `Boolean`
+
+Suppose 
+
+- `pathname`: `'/path/to/a.js'`
+- `router.location`: `/path`
+- `router.root`: `/data/`
+- `router.with_location`: **`true`**
+
+Then, neuron-router will search `'/data/path/to/a.js'` instead of `/data/to/a.js`.
+
+And if `router.with_location` is `false`, it will search `/data/to/a.js`
 
 ## License
 
