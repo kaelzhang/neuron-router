@@ -12,14 +12,16 @@ var make_array = require('make-array');
 //   - by_pass: `String` 
 exports.route = function (path, config, callback) {
   function none () {
-    process.nextTick(function () {
-      if (!config.by_pass) {
+    process.nextTick(global_by_pass);
+  }
+
+  function global_by_pass () {
+    if (!config.by_pass) {
         return callback(null, null);
       }
 
       var url = exports._join_url_path(config.by_pass, path);
       return callback(null, url);
-    });
   }
 
   if (Object(config) !== config) {
@@ -40,7 +42,9 @@ exports.route = function (path, config, callback) {
       return;
     }
 
-    var p = path.slice(l.length);
+    var p = router.with_location
+      ? path
+      : path.slice(l.length);
 
     if (
       // location `/a` should not match `/a.js`,
@@ -78,8 +82,12 @@ exports.route = function (path, config, callback) {
       return callback(filename, null);
     }
 
+    if (!found.by_pass) {
+      return global_by_pass();
+    }
+
     callback(
-      null, 
+      null,
       found.by_pass 
         ? exports._join_url_path(found.by_pass, pathname)
         : null
