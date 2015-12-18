@@ -20,7 +20,7 @@ exports.route = function (path, config, callback) {
         return callback(null, null);
       }
 
-      var url = exports._join_url_path(config.by_pass, path);
+      var url = utils.join_url_path(config.by_pass, path);
       return callback(null, url);
   }
 
@@ -64,7 +64,7 @@ exports.route = function (path, config, callback) {
   var roots = make_array(found.root);
 
   function exists (root, callback) {
-    var filename = exports._join_file_path(root, pathname);
+    var filename = utils.join_file_path(root, pathname);
     fs.exists(filename, function (exists) {
       if (exists) {
         return callback(null, filename);
@@ -89,33 +89,37 @@ exports.route = function (path, config, callback) {
     callback(
       null,
       found.by_pass 
-        ? exports._join_url_path(found.by_pass, pathname)
+        ? utils.join_url_path(found.by_pass, pathname)
         : null
     );
   });
 };
 
 
-exports._make_sure_trailing_slash = function (str) {
+var utils = {};
+exports.utils = utils;
+
+
+utils.make_sure_trailing_slash = function (str) {
   return str.replace(/\/*$/, '/');
 };
 
 
-exports._remove_leading_slash = function (str) {
+utils.remove_leading_slash = function (str) {
   return str.replace(/^\/+/, '');
 };
 
 
 // Only used for the situation of neuron-router
-exports._join_file_path = function (a, b) {
-  b = exports._remove_leading_slash(b);
+utils.join_file_path = function (a, b) {
+  b = utils.remove_leading_slash(b);
   return node_path.join(a, b);
 };
 
 
 // Only used for the situation of neuron-router
-exports._join_url_path = function (a, b) {
-  a = exports._make_sure_trailing_slash(a);
-  b = exports._remove_leading_slash(b);
+utils.join_url_path = function (a, b) {
+  a = utils.make_sure_trailing_slash(a);
+  b = utils.remove_leading_slash(b);
   return a + b;
 };
