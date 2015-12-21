@@ -196,6 +196,26 @@ run
         null,
         null
       ]
+    },
+
+    {
+      d: '1.3.0: default root',
+      r: runner_for_default_root,
+      a: '/g/f.js',
+      e: [
+        root('f/g/f.js'),
+        null
+      ]
     }
   ]);
+
+
+function runner_for_default_root (path) {
+  var done = this.async();
+  var r = clone(routers);
+  neuron_router.route(path, {
+    root: root('f'),
+    routers: r
+  }, done);
+}
 

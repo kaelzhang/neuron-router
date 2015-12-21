@@ -45,7 +45,12 @@ config:
     }
   ],
 
-  // If no routers match the given pathname, it will use the by_pass url
+  // If no router.location matches the given pathname, 
+  // it will search this directory
+  root: '/old-data',
+
+  // If specified and neuron-router find no corresponding file in local machine, 
+  // it will use the by_pass url
   by_pass: 'http://domain2.com/'
 }
 ```

@@ -49,7 +49,8 @@ exports.route = function (path, config, callback) {
   routers.some(function (router) {
     if (router.is_default === atom) {
       found = router
-
+      pathname = path
+      return true
     }
 
     var l = router.location
@@ -76,8 +77,6 @@ exports.route = function (path, config, callback) {
     return none()
   }
 
-  var roots = make_array(found.root)
-
   function exists (root, callback) {
     var filename = utils.join_file_path(root, pathname)
     fs.exists(filename, function (exists) {
@@ -90,6 +89,7 @@ exports.route = function (path, config, callback) {
     })
   }
 
+  var roots = make_array(found.root)
   some(roots, exists, function (err, filename) {
     // actually, there is no `err`.
 
