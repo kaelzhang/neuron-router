@@ -28,7 +28,7 @@
     "chai": "*",
     "clone": "^1.0.2",
     "mocha": "*",
-    "run-mocha-cases": "^1.0.7"
+    "run-mocha-cases": "^1.1.0"
   },
   "dependencies": {
     "async-some": "^1.0.2",

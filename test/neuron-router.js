@@ -1,15 +1,15 @@
-'use strict';
+'use strict'
 
-var expect = require('chai').expect;
-var neuron_router = require('../');
-var run = require('run-mocha-cases');
-var node_path = require('path');
-var clone = require('clone');
+var expect = require('chai').expect
+var neuron_router = require('../')
+var run = require('run-mocha-cases')
+var node_path = require('path')
+var clone = require('clone')
 
 var _root = node_path.join(__dirname, 'fixtures')
 
 function root (path) {
-  return node_path.join(_root, path);
+  return node_path.join(_root, path)
 }
 
 var routers = [
@@ -38,15 +38,15 @@ var routers = [
     root: [root('e')],
     with_location: true
   }
-];
+]
 
 run
   .description('router.route()')
   .runner(function (path) {
-    var done = this.async();
+    var done = this.async()
     neuron_router({
       routers: routers
-    }).route(path, done);
+    }).route(path, done)
   })
   .start([
     {
@@ -80,11 +80,11 @@ run
       d: 'not found, global by_pass',
       a: '/c/not-found.js',
       r: function (path) {
-        var done = this.async();
+        var done = this.async()
         neuron_router({
           routers: routers,
           by_pass: 'http://domain.com'
-        }).route(path, done);
+        }).route(path, done)
       },
       e: [
         null,
@@ -96,11 +96,11 @@ run
       d: 'not found, global by_pass(ends with slash)',
       a: '/c/not-found.js',
       r: function (path) {
-        var done = this.async();
+        var done = this.async()
         neuron_router({
           routers: routers,
           by_pass: 'http://domain.com/'
-        }).route(path, done);
+        }).route(path, done)
       },
       e: [
         null,
@@ -112,11 +112,11 @@ run
       d: 'not found, global by_pass(ends with slash)',
       a: '/c/not-found.js',
       r: function (path) {
-        var done = this.async();
+        var done = this.async()
         neuron_router({
           routers: routers,
           by_pass: 'http://domain.com/'
-        }).route(path, done);
+        }).route(path, done)
       },
       e: [
         null,
@@ -128,14 +128,14 @@ run
       d: 'not found, sub by_pass(ends with slash)',
       a: '/a/not-found.js',
       r: function (path) {
-        var done = this.async();
-        var r = clone(routers);
+        var done = this.async()
+        var r = clone(routers)
         r[0].by_pass = 'http://domain2.com/'
 
         neuron_router({
           routers: r,
           by_pass: 'http://domain.com'
-        }).route(path, done);
+        }).route(path, done)
       },
       e: [
         null,
@@ -147,14 +147,14 @@ run
       d: 'not found, sub by_pass(not ends with slash)',
       a: '/a/not-found.js',
       r: function (path) {
-        var done = this.async();
-        var r = clone(routers);
+        var done = this.async()
+        var r = clone(routers)
         r[0].by_pass = 'http://domain2.com'
 
         neuron_router({
           routers: r,
           by_pass: 'http://domain.com'
-        }).route(path, done);
+        }).route(path, done)
       },
       e: [
         null,
@@ -207,15 +207,15 @@ run
         null
       ]
     }
-  ]);
+  ])
 
 
 function runner_for_default_root (path) {
-  var done = this.async();
-  var r = clone(routers);
+  var done = this.async()
+  var r = clone(routers)
   neuron_router({
     root: root('f'),
     routers: r
-  }).route(path, done);
+  }).route(path, done)
 }
 

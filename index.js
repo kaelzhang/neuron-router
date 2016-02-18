@@ -42,17 +42,16 @@ Router.prototype.by_pass = function(by_pass) {
 
 
 Router.prototype.root = function(root) {
-  this.options.root
+  this.options.root = root
   return this
 }
 
 
 Router.prototype.add = function (routers) {
-  routers = this.options.routers
+  var r = this.options.routers
   make_array(routers).forEach(function (router) {
-    routers.push(router)
-
-  }.bind(this))
+    r.push(router)
+  })
 
   return this
 }
