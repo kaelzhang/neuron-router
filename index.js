@@ -17,7 +17,7 @@ function router(options) {
 
 function Router(options) {
   this.options = {
-    routers: []
+    routes: []
   }
 
   if (Object(options) !== options) {
@@ -26,7 +26,7 @@ function Router(options) {
 
   options.by_pass && this.by_pass(options.by_pass)
   options.root && this.root(options.root)
-  options.routers && options.routers.length && this.add(options.routers)
+  options.routes && options.routes.length && this.add(options.routes)
 }
 
 
@@ -47,9 +47,9 @@ Router.prototype.root = function(root) {
 }
 
 
-Router.prototype.add = function (routers) {
-  var r = this.options.routers
-  make_array(routers).forEach(function (router) {
+Router.prototype.add = function (routes) {
+  var r = this.options.routes
+  make_array(routes).forEach(function (router) {
     r.push(router)
   })
 
@@ -58,14 +58,14 @@ Router.prototype.add = function (routers) {
 
 
 Router.prototype.clear = function() {
-  this.options.routers.length = 0
+  this.options.routes.length = 0
   return this
 }
 
 
 // @param {String} path pathname of the url, starts with '/'
 // @param {Object} config
-//   - routers: `Array`
+//   - routes: `Array`
 //   - by_pass: `String`
 router._route = function (path, config, callback) {
   function none () {
@@ -85,17 +85,17 @@ router._route = function (path, config, callback) {
     return none()
   }
 
-  var routers = config.routers
-  if (!path || !routers || !routers.length) {
+  var routes = config.routes
+  if (!path || !routes || !routes.length) {
     return none()
   }
 
-  routers = [].concat(routers)
+  routes = [].concat(routes)
   var default_root = config.root
   var atom = {}
   if (default_root) {
     // adds default router to the end
-    routers.push({
+    routes.push({
       root: default_root,
       is_default: atom
     })
@@ -103,19 +103,19 @@ router._route = function (path, config, callback) {
 
   var found
   var pathname
-  routers.some(function (router) {
-    if (router.is_default === atom) {
-      found = router
+  routes.some(function (route) {
+    if (route.is_default === atom) {
+      found = route
       pathname = path
       return true
     }
 
-    var l = router.location
+    var l = route.location
     if (!l || path.indexOf(l) !== 0) {
       return
     }
 
-    var p = router.with_location
+    var p = route.with_location
       ? path
       : path.slice(l.length)
 
@@ -124,7 +124,7 @@ router._route = function (path, config, callback) {
       /\/$/.test(l)
       || /^\//.test(p)
     ) {
-      found = router
+      found = route
       pathname = p
       return true
     }

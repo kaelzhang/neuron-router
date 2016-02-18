@@ -12,7 +12,7 @@ function root (path) {
   return node_path.join(_root, path)
 }
 
-var routers = [
+var routes = [
   {
     location: '/a',
     root: root('a')
@@ -45,7 +45,7 @@ run
   .runner(function (path) {
     var done = this.async()
     neuron_router({
-      routers: routers
+      routes: routes
     }).route(path, done)
   })
   .start([
@@ -82,7 +82,7 @@ run
       r: function (path) {
         var done = this.async()
         neuron_router({
-          routers: routers,
+          routes: routes,
           by_pass: 'http://domain.com'
         }).route(path, done)
       },
@@ -98,7 +98,7 @@ run
       r: function (path) {
         var done = this.async()
         neuron_router({
-          routers: routers,
+          routes: routes,
           by_pass: 'http://domain.com/'
         }).route(path, done)
       },
@@ -114,7 +114,7 @@ run
       r: function (path) {
         var done = this.async()
         neuron_router({
-          routers: routers,
+          routes: routes,
           by_pass: 'http://domain.com/'
         }).route(path, done)
       },
@@ -129,11 +129,11 @@ run
       a: '/a/not-found.js',
       r: function (path) {
         var done = this.async()
-        var r = clone(routers)
+        var r = clone(routes)
         r[0].by_pass = 'http://domain2.com/'
 
         neuron_router({
-          routers: r,
+          routes: r,
           by_pass: 'http://domain.com'
         }).route(path, done)
       },
@@ -148,11 +148,11 @@ run
       a: '/a/not-found.js',
       r: function (path) {
         var done = this.async()
-        var r = clone(routers)
+        var r = clone(routes)
         r[0].by_pass = 'http://domain2.com'
 
         neuron_router({
-          routers: r,
+          routes: r,
           by_pass: 'http://domain.com'
         }).route(path, done)
       },
@@ -212,10 +212,10 @@ run
 
 function runner_for_default_root (path) {
   var done = this.async()
-  var r = clone(routers)
+  var r = clone(routes)
   neuron_router({
     root: root('f'),
-    routers: r
+    routes: r
   }).route(path, done)
 }
 

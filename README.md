@@ -25,7 +25,7 @@ config:
 
 ```js
 {
-  routers: [
+  routes: [
     {
       location: '/mod',
       root: '/home/my/.static_modules/'
@@ -34,7 +34,7 @@ config:
       location: '/old',
       root: ['/data/public2', '/data/public'],
 
-      // If the current router matches the pathname, 
+      // If the current router matches the pathname,
       // but the file does not exist, it will use the this `by_pass`
       by_pass: 'http://domain.com'
     },
@@ -45,11 +45,11 @@ config:
     }
   ],
 
-  // If no router.location matches the given pathname, 
+  // If no router.location matches the given pathname,
   // it will search this directory
   root: '/old-data',
 
-  // If specified and neuron-router find no corresponding file in local machine, 
+  // If specified and neuron-router find no corresponding file in local machine,
   // it will use the by_pass url
   by_pass: 'http://domain2.com/'
 }
@@ -59,7 +59,7 @@ config:
 var router = require('neuron-router');
 var pathname = '/pathname/to/a.js'
 router.route(pathname, config, function (filename, fallback_url) {
-  
+
 });
 ```
 
@@ -68,9 +68,9 @@ router.route(pathname, config, function (filename, fallback_url) {
 - filename `String` if any router matches the `pathname`, and the routed filename exists, it will not be null.
 - fallback_url `String`
 
-If the given `pathname` matches the `router.location`, neuron-router will search the local file within `router.root`, 
-and if found, the `filename` of the found file will be passed to `callback`. 
-Otherwise, `filename` will be `null`, and if `router.by_pass` or `config.by_pass` is defined, 
+If the given `pathname` matches the `router.location`, neuron-router will search the local file within `router.root`,
+and if found, the `filename` of the found file will be passed to `callback`.
+Otherwise, `filename` will be `null`, and if `router.by_pass` or `config.by_pass` is defined,
 the resolved fallback url will passed to `callback` as the second parameter.
 
 ##### router.root `path`
@@ -79,7 +79,7 @@ the resolved fallback url will passed to `callback` as the second parameter.
 
 ##### router.with_location `Boolean`
 
-Suppose 
+Suppose
 
 - `pathname`: `'/path/to/a.js'`
 - `router.location`: `/path`
