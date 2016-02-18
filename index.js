@@ -25,8 +25,8 @@ function Router(options) {
     return
   }
 
-  options.by_pass && this.by_pass(options.by_pass)
-  options.root && this.root(options.root)
+  options.by_pass && this.set_by_pass(options.by_pass)
+  options.root && this.set_root(options.root)
   options.routes && options.routes.length && this.add(options.routes)
 }
 
@@ -36,13 +36,18 @@ Router.prototype.route = function(pathname, callback) {
 }
 
 
-Router.prototype.by_pass = function(by_pass) {
+Router.prototype.set_by_pass = function(by_pass) {
   this.options.by_pass = by_pass
   return this
 }
 
 
-Router.prototype.root = function(root) {
+Router.prototype.by_pass = function() {
+  return this.options.by_pass
+}
+
+
+Router.prototype.set_root = function(root) {
   var options = this.options
   if (!options.root) {
     options.root = []
@@ -50,6 +55,11 @@ Router.prototype.root = function(root) {
 
   options.root = unique(options.root.concat(root))
   return this
+}
+
+
+Router.prototype.root = function() {
+  return this.options.root
 }
 
 
@@ -61,10 +71,24 @@ Router.prototype.add = function (routes) {
     }
 
     route.root = make_array(route.root)
+    if (route.default && !this.default_route) {
+      this.default_route = route.default
+    }
     r.push(route)
-  })
+
+  }.bind(this))
 
   return this
+}
+
+
+Router.prototype.routes = function() {
+  return this.options.routes
+}
+
+
+Router.prototype.get_default_route = function() {
+  return this.default_route
 }
 
 
