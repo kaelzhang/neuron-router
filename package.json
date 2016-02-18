@@ -1,7 +1,7 @@
 {
   "name": "neuron-router",
-  "version": "1.3.0",
-  "description": "neuron-router",
+  "version": "2.0.0",
+  "description": "Router for searching static files.",
   "main": "index.js",
   "scripts": {
     "test": "mocha --reporter spec ./test/*.js"

@@ -44,9 +44,9 @@ run
   .description('router.route()')
   .runner(function (path) {
     var done = this.async();
-    neuron_router.route(path, {
+    neuron_router({
       routers: routers
-    }, done);
+    }).route(path, done);
   })
   .start([
     {
@@ -81,10 +81,10 @@ run
       a: '/c/not-found.js',
       r: function (path) {
         var done = this.async();
-        neuron_router.route(path, {
+        neuron_router({
           routers: routers,
           by_pass: 'http://domain.com'
-        }, done);
+        }).route(path, done);
       },
       e: [
         null,
@@ -97,10 +97,10 @@ run
       a: '/c/not-found.js',
       r: function (path) {
         var done = this.async();
-        neuron_router.route(path, {
+        neuron_router({
           routers: routers,
           by_pass: 'http://domain.com/'
-        }, done);
+        }).route(path, done);
       },
       e: [
         null,
@@ -113,10 +113,10 @@ run
       a: '/c/not-found.js',
       r: function (path) {
         var done = this.async();
-        neuron_router.route(path, {
+        neuron_router({
           routers: routers,
           by_pass: 'http://domain.com/'
-        }, done);
+        }).route(path, done);
       },
       e: [
         null,
@@ -132,10 +132,10 @@ run
         var r = clone(routers);
         r[0].by_pass = 'http://domain2.com/'
 
-        neuron_router.route(path, {
+        neuron_router({
           routers: r,
           by_pass: 'http://domain.com'
-        }, done);
+        }).route(path, done);
       },
       e: [
         null,
@@ -151,10 +151,10 @@ run
         var r = clone(routers);
         r[0].by_pass = 'http://domain2.com'
 
-        neuron_router.route(path, {
+        neuron_router({
           routers: r,
           by_pass: 'http://domain.com'
-        }, done);
+        }).route(path, done);
       },
       e: [
         null,
@@ -213,9 +213,9 @@ run
 function runner_for_default_root (path) {
   var done = this.async();
   var r = clone(routers);
-  neuron_router.route(path, {
+  neuron_router({
     root: root('f'),
     routers: r
-  }, done);
+  }).route(path, done);
 }
 
