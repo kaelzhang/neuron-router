@@ -1,6 +1,6 @@
 {
   "name": "neuron-router",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Router for searching static files.",
   "main": "index.js",
   "scripts": {
@@ -31,6 +31,7 @@
     "run-mocha-cases": "^1.1.0"
   },
   "dependencies": {
+    "array-unique": "^0.2.1",
     "async-some": "^1.0.2",
     "make-array": "^0.1.2"
   }

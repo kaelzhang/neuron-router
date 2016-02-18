@@ -8,6 +8,7 @@ var node_path = require('path')
 var fs = require('fs')
 var some = require('async-some')
 var make_array = require('make-array')
+var unique = require('array-unique')
 
 
 function router(options) {
@@ -42,15 +43,25 @@ Router.prototype.by_pass = function(by_pass) {
 
 
 Router.prototype.root = function(root) {
-  this.options.root = root
+  var options = this.options
+  if (!options.root) {
+    options.root = []
+  }
+
+  options.root = unique(options.root.concat(root))
   return this
 }
 
 
 Router.prototype.add = function (routes) {
   var r = this.options.routes
-  make_array(routes).forEach(function (router) {
-    r.push(router)
+  make_array(routes).forEach(function (route) {
+    if (!route || !route.location || !route.root) {
+      return
+    }
+
+    route.root = make_array(route.root)
+    r.push(route)
   })
 
   return this
@@ -73,7 +84,7 @@ router._route = function (path, config, callback) {
   }
 
   function global_by_pass () {
-    if (!config.by_pass) {
+    if (!config || !config.by_pass) {
         return callback(null, null)
       }
 
@@ -146,7 +157,7 @@ router._route = function (path, config, callback) {
     })
   }
 
-  var roots = make_array(found.root)
+  var roots = found.root
   some(roots, exists, function (err, filename) {
     // actually, there is no `err`.
 
