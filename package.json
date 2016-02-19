@@ -1,6 +1,6 @@
 {
   "name": "neuron-router",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "Router for searching static files.",
   "main": "index.js",
   "scripts": {

@@ -41,7 +41,12 @@ config:
     {
       location: '/new',
       root: '/data/',
-      with_location: true
+      with_location: true,
+      // If the current route is matched,
+      // `data` will be passed to the callback as the third parameter.
+      data: {
+        user: 'Kael'
+      }
     }
   ],
 
@@ -58,7 +63,7 @@ config:
 ```js
 var router = require('neuron-router');
 var pathname = '/pathname/to/a.js'
-router.route(pathname, config, function (filename, fallback_url) {
+router.route(pathname, config, function (filename, fallback_url, data) {
 
 });
 ```
