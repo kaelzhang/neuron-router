@@ -9,6 +9,10 @@ var fs = require('fs')
 var some = require('async-some')
 var make_array = require('make-array')
 var unique = require('array-unique')
+var Route = require('./lib/route')
+var utils = require('./lib/utils')
+
+router.utils = utils
 
 
 function router(options) {
@@ -65,15 +69,32 @@ Router.prototype.root = function(root) {
 Router.prototype.add = function (routes) {
   var r = this.options.routes
   make_array(routes).forEach(function (route) {
-    if (!route || !route.location || !route.root) {
+    route = new Route(route)
+
+    if (!route.location) {
       return
     }
 
-    route.root = make_array(route.root)
-    if (route.default && !this.default_route) {
-      this._default_route = route.default
+    var route_found
+    r.some(function (exists_route) {
+      if (exists_route.location === route.location) {
+        route_found = exists_route
+        return true
+      }
+    })
+
+    // If the location is already in the router,
+    // then concat the roots
+    if (route_found) {
+      route_found.add(route.root)
+      return
     }
+
     r.push(route)
+
+    if (route.default && !this.default_route) {
+      this._default_route = route
+    }
 
   }.bind(this))
 
@@ -102,6 +123,8 @@ Router.prototype.clear = function() {
 //   - routes: `Array`
 //   - by_pass: `String`
 router._route = function (path, config, callback) {
+  path = utils.make_sure_leading_slash(path)
+
   function none () {
     process.nextTick(global_by_pass)
   }
@@ -138,6 +161,7 @@ router._route = function (path, config, callback) {
   var found
   var pathname
   routes.some(function (route) {
+    // The last route
     if (route.is_default === atom) {
       found = route
       pathname = path
@@ -145,6 +169,7 @@ router._route = function (path, config, callback) {
     }
 
     var l = route.location
+    // must starts with 0
     if (!l || path.indexOf(l) !== 0) {
       return
     }
@@ -199,33 +224,4 @@ router._route = function (path, config, callback) {
         : null
     )
   })
-}
-
-
-var utils = {}
-router.utils = utils
-
-
-utils.make_sure_trailing_slash = function (str) {
-  return str.replace(/\/*$/, '/')
-}
-
-
-utils.remove_leading_slash = function (str) {
-  return str.replace(/^\/+/, '')
-}
-
-
-// Only used for the situation of neuron-router
-utils.join_file_path = function (a, b) {
-  b = utils.remove_leading_slash(b)
-  return node_path.join(a, b)
-}
-
-
-// Only used for the situation of neuron-router
-utils.join_url_path = function (a, b) {
-  a = utils.make_sure_trailing_slash(a)
-  b = utils.remove_leading_slash(b)
-  return a + b
 }
