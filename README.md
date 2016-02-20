@@ -60,10 +60,12 @@ config:
 }
 ```
 
+### router.route(pathname, callback)
+
 ```js
-var router = require('neuron-router');
+var router = require('neuron-router')(config);
 var pathname = '/pathname/to/a.js'
-router.route(pathname, config, function (filename, fallback_url, data) {
+router.route(pathname, function (filename, fallback_url) {
 
 });
 ```
@@ -95,6 +97,11 @@ Then, neuron-router will search `'/data/path/to/a.js'` instead of `/data/to/a.js
 
 And if `router.with_location` is `false`, it will search `/data/to/a.js`.
 
+### router.add(routes)
+
+Adds a new route or array of routes. If the `route.location` is already added, the `route.root` will be concated with the root of the existed route.
+
+- **routes** `Object|Array.<route>`
 
 ## License
 
