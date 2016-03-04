@@ -41,12 +41,7 @@ config:
     {
       location: '/new',
       root: '/data/',
-      with_location: true,
-      // If the current route is matched,
-      // `data` will be passed to the callback as the third parameter.
-      data: {
-        user: 'Kael'
-      }
+      with_location: true
     }
   ],
 
