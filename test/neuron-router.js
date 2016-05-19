@@ -30,6 +30,7 @@ var routes = [
 
   {
     location: '/d',
+    default: true,
     root: [root('b'), root('c')]
   },
 
@@ -39,6 +40,18 @@ var routes = [
     with_location: true
   }
 ]
+
+
+describe('router.default_route()', function () {
+  it('should return default router', function () {
+    var router = neuron_router({
+      routes: routes
+    })
+
+    expect(router.default_route().location).to.equal('/d')
+  })
+})
+
 
 run
   .description('router.route()')

@@ -75,6 +75,10 @@ Router.prototype.add = function (routes) {
       return
     }
 
+    if (route.default && !this._default_route) {
+      this._default_route = route
+    }
+
     var route_found
     r.some(function (exists_route) {
       if (exists_route.location === route.location) {
@@ -91,10 +95,6 @@ Router.prototype.add = function (routes) {
     }
 
     r.push(route)
-
-    if (route.default && !this.default_route) {
-      this._default_route = route
-    }
 
   }.bind(this))
 
